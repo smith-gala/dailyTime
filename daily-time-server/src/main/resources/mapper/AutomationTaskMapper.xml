@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yyyplot.dailytime.mapper.AutomationTaskMapper">
+
+    <!-- automation_task 表的完整字段列表，避免使用 SELECT *。 -->
+    <sql id="automationTaskColumns">
+        id,
+        task_id,
+        sentence_id,
+        sentence,
+        normalized_sentence,
+        active_key,
+        requested_translation,
+        status,
+        progress_percent,
+        progress_label,
+        video_file,
+        error_code,
+        error_message,
+        created_by,
+        created_at,
+        updated_at,
+        completed_at,
+        version
+    </sql>
+
+    <select
+            id="findByTaskId"
+            resultType="com.yyyplot.dailytime.entity.AutomationTaskEntity">
+        SELECT
+            <include refid="automationTaskColumns" />
+        FROM automation_task
+        WHERE task_id = #{taskId}
+        LIMIT 1
+    </select>
+
+    <select
+            id="findByActiveKey"
+            resultType="com.yyyplot.dailytime.entity.AutomationTaskEntity">
+        SELECT
+            <include refid="automationTaskColumns" />
+        FROM automation_task
+        WHERE active_key = #{activeKey}
+        LIMIT 1
+    </select>
+
+    <!-- 抢占依赖状态和乐观锁版本；返回 0 时当前 Worker 必须退出，不能重复执行。 -->
+    <update id="claimQueuedTask">
+        UPDATE automation_task
+        SET
+            status = 'ANALYZING',
+            progress_percent = 10,
+            progress_label = '正在分析内容',
+            version = version + 1,
+            updated_at = NOW()
+        WHERE task_id = #{taskId}
+          AND status = 'QUEUED'
+          AND version = #{expectedVersion}
+    </update>
+
+    <update id="updateProgress">
+        UPDATE automation_task
+        SET
+            progress_percent = #{progress},
+            progress_label = #{label},
+            version = version + 1,
+            updated_at = NOW()
+        WHERE task_id = #{taskId}
+          AND status = #{status}
+          AND version = #{expectedVersion}
+    </update>
+
+    <select
+            id="findRunningTasks"
+            resultType="com.yyyplot.dailytime.entity.AutomationTaskEntity">
+        SELECT
+            <include refid="automationTaskColumns" />
+        FROM automation_task
+        WHERE status IN (
+            'ANALYZING',
+            'DOWNLOADING',
+            'RENDERING'
+        )
+    </select>
+
+</mapper>

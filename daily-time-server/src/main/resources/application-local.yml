@@ -1,0 +1,10 @@
+# 本文件仅是占位模板，不包含真实端口或密码。IDEA Run Configuration 环境变量。
+spring:
+  flyway:
+    enabled: ${FLYWAY_ENABLED:false}
+
+logging:
+  pattern:
+    level: "%5p [traceId=%X{traceId:-} taskId=%X{taskId:-} stage=%X{stage:-}]"
+  level:
+    com.yyyplot.dailytime.mapper: TRACE;

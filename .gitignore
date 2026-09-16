@@ -1,0 +1,73 @@
+# Private notes and local agent instructions (keep on this computer)
+docs/
+/myREADME.md
+AGENTS.md
+.codex-tmp/
+/实际账号/
+
+# Credentials and local environment overrides
+.env
+.env.*
+!.env.example
+!.env.*.example
+.envrc
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+secrets*.json
+
+# Runtime data: database, backups, sentence/adoption records, music and videos
+/data/
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.sqlite3-*
+*.log
+logs/
+
+# Python environments, bytecode and tool caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.venv/
+venv/
+env/
+*.egg-info/
+.ipynb_checkpoints/
+
+# Java / Node build output and dependencies
+target/
+*.class
+node_modules/
+dist/
+build/
+coverage/
+
+# Local IDE and operating-system files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+*.tmp
+*.bak
+
+# Locally prepared release packages
+/release/

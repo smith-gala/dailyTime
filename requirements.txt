@@ -1,0 +1,4 @@
+# 推荐 Python 3.11（支持 3.10+）。FFmpeg/ffprobe 是外部程序，需单独安装。
+PyYAML>=6.0.2,<7
+Pillow>=10.0.0,<13
+pytest>=8.0,<9

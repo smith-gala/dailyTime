@@ -1,0 +1,115 @@
+# Python/FFmpeg 媒体 Worker 配置。业务配置由 Java 服务和环境变量管理。
+# 修改后重启 Java 服务；所有坐标都以 1080×1920 画布像素为单位。
+
+app_title: 每日一句视频生成器
+
+paths:
+  # 仅包含媒体 Worker 使用的目录。相对路径均相对于本项目根目录。
+  data: data
+  jobs: data/jobs
+  output: data/output
+  music: data/music
+
+render:
+  # 固定抖音竖屏画布，请保持 1080×1920。
+  width: 1080
+  height: 1920
+  fps: 30
+  video_codec: libx264
+  audio_codec: aac
+  audio_bitrate: 192k
+  audio_sample_rate: 48000
+  crf: 20
+  preset: veryfast
+  # 将不同来源片段统一到约 -16 LUFS，减少片段间音量跳变。
+  normalize_audio: true
+  # 每段音频首尾极短淡化，避免硬切时出现爆音；0 表示关闭。
+  audio_edge_fade_seconds: 0.02
+  # 已把 ffmpeg 加入 PATH 时留空；否则填写 ffmpeg.exe 或其目录的绝对路径。
+  ffmpeg_path: ""
+  max_uploads: 10
+  # 防止误上传完整电影；单个片段允许的最长秒数。
+  max_clip_seconds: 120
+
+music:
+  # Java Worker 调用始终使用这里的固定值。
+  enabled: true
+  volume: 0.40
+  # 背景音乐在成片结尾做固定淡出，不做自动对白检测或动态压低。
+  fade_out_seconds: 0.2
+
+fonts:
+  # 可以改成项目内字体文件，例如 assets/fonts/my-font.ttf。
+  english: C:/Windows/Fonts/arialbd.ttf
+  english_subtitle: C:/Windows/Fonts/timesbd.ttf
+  chinese: C:/Windows/Fonts/simhei.ttf
+  phonetic: C:/Windows/Fonts/arial.ttf
+
+layout:
+  # ---------------- 整体背景 ----------------
+  background_color: "#03152B"
+
+  # ---------------- 左上角栏目名称 ----------------
+  series_text: 每日一句
+  series_x: 66
+  series_y: 104
+  series_font_size: 34
+  series_color: "#6EA8E5"
+
+  # ---------------- 顶部英文原句 ----------------
+  # y 是文字块顶部到画布顶部的距离；左右各留 40px。
+  # 句子放不下时先缩小到最小字号，仍放不下才换行。
+  top_english_y: 270
+  top_english_font_size: 76
+  top_english_min_font_size: 42
+  # 画布宽度是 1080px，左右各留 40px：1080 - 40 × 2 = 1000。
+  top_english_max_width: 1000
+
+  # ---------------- 顶部中文翻译 ----------------
+  top_chinese_y: 368
+  top_chinese_font_size: 58
+  top_chinese_min_font_size: 38
+  top_chinese_max_width: 950
+
+  # ---------------- 顶部整句 IPA ----------------
+  phonetic_y: 458
+  phonetic_font_size: 45
+  phonetic_min_font_size: 30
+  phonetic_max_width: 950
+
+  # ---------------- 核心视频窗口 ----------------
+  # 原片等比放大并完全覆盖视频区域，超出的上下或左右部分从中心裁切。
+  # 整个区域不会出现黑边，人物也不会被横向或纵向拉伸。
+  video_x: 40
+  video_y: 535
+  video_width: 1000
+  video_height: 880
+
+  # ---------------- 视频内部英文字幕 ----------------
+  english_subtitle_font_size: 58
+  english_subtitle_min_font_size: 34
+  english_subtitle_max_width: 900
+  # 英文字幕底部到“视频窗口底部”的距离，不是到整张画布底部的距离。
+  english_subtitle_bottom_margin: 95
+  english_subtitle_stroke_width: 3
+
+  # ---------------- 视频内部中文字幕 ----------------
+  # 与英文字幕一起放在视频窗口底部的黑色字幕区。
+  chinese_subtitle_y: 1337
+  chinese_subtitle_font_size: 48
+  chinese_subtitle_min_font_size: 34
+  chinese_subtitle_max_width: 940
+
+  # ---------------- 底部固定提示语 ----------------
+  # 不需要时把 footer_text 改成空字符串 ""。
+  footer_text: 评论区默写一遍，比看三遍都管用哦！
+  footer_y: 1485
+  footer_font_size: 34
+  footer_max_width: 920
+
+  # ---------------- 文字颜色 ----------------
+  top_text_color: "#FFD400"
+  phonetic_color: "#F7F8FC"
+  subtitle_color: "#FFFFFF"
+  subtitle_outline_color: "#050505"
+  footer_color: "#F7F8FC"

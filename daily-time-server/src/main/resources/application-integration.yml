@@ -1,0 +1,7 @@
+# 真实集成测试专用；必须由项目开发者配置容器后显式启用。
+spring:
+  flyway:
+    enabled: ${FLYWAY_ENABLED:false}
+
+daily-time:
+  agent-enabled: false

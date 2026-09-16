@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: daily-time-server
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD:}
+      database: ${REDIS_DATABASE:0}
+      timeout: 2s
+  flyway:
+    enabled: ${FLYWAY_ENABLED:false}
+    locations: classpath:db/migration
+    validate-migration-naming: true
+  ai:
+    openai:
+      api-key: ${LLM_API_KEY:disabled}
+      base-url: ${LLM_BASE_URL:https://api.openai.com}
+      chat:
+        options:
+          model: ${LLM_MODEL:gpt-4.1-mini}
+          temperature: 0.1
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
+
+daily-time:
+  project-root: ${DAILY_TIME_PROJECT_ROOT:D:/yyyPlot/video/dailyTime}
+  output-dir: data/output
+  task-dir: data/java-jobs
+  agent-enabled: ${DAILY_TIME_AGENT_ENABLED:true}
+  conversation-binding-cache-ttl: ${CONVERSATION_BINDING_CACHE_TTL:30d}
+  notification:
+    enabled: ${OPENCLAW_NOTIFICATIONS_ENABLED:true}
+    openclaw-command: ${OPENCLAW_COMMAND:D:/npm-global/openclaw.cmd}
+    poll-interval: 5s
+    send-timeout: 2m
+    max-attempts: 6
+    retry-base-delay: 10s
+    processing-stale-after: 5m
+  worker:
+    node-command: ${NODE_COMMAND:node}
+    python-command: ${PYTHON_COMMAND:python}
+    downloader-script: scripts/download_playphrase.mjs
+    renderer-script: scripts/render_worker.py
+    download-timeout: 6m
+    render-timeout: 15m
+    clip-count: 5
+    retries: 3
+
+server:
+  port: ${SERVER_PORT:8080}
