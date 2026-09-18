@@ -36,11 +36,14 @@
     </dependencyManagement>
 
     <dependencies>
+<!--        Web Starter 会引入 Spring MVC、默认的内嵌 Tomcat、JSON 处理等相关依赖-->
+<!--        版本由上一步的 Spring Boot 父 POM 管理-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+<!--        则引入参数校验所需的实现-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>

@@ -34,7 +34,9 @@ public class AgentController {
             @RequestHeader(value = "X-User-Id", defaultValue = "local-user")
             String userId) {
         UserContext userContext = UserContext.apiUser(userId);
+
         AgentChatVO agentChat = agentService.chat(request, userContext);
+
         return ApiResponse.ok(agentChat);
     }
 }

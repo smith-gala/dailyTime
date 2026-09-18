@@ -1,10 +1,9 @@
 # Private notes and local agent instructions (keep on this computer)
-docs/
 /myREADME.md
 AGENTS.md
 .codex-tmp/
 /实际账号/
-
+/视频制作/
 # Credentials and local environment overrides
 .env
 .env.*
@@ -71,3 +70,4 @@ Desktop.ini
 
 # Locally prepared release packages
 /release/
+
