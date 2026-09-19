@@ -34,8 +34,11 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
 
+#输出文件放在哪里？用什么命令运行 Node？下载超时多久？
+#项目自定义配置
 daily-time:
   project-root: ${DAILY_TIME_PROJECT_ROOT:D:/yyyPlot/video/dailyTime}
+# 路径只是一个值，写上output-dir不会自动创建目录，具体操作仍由业务代码执行
   output-dir: data/output
   task-dir: data/java-jobs
   agent-enabled: ${DAILY_TIME_AGENT_ENABLED:true}
@@ -48,6 +51,7 @@ daily-time:
     max-attempts: 6
     retry-base-delay: 10s
     processing-stale-after: 5m
+
   worker:
     node-command: ${NODE_COMMAND:node}
     python-command: ${PYTHON_COMMAND:python}

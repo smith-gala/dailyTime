@@ -39,18 +39,21 @@ public class AgentServiceImpl implements AgentService {
     /**
      * 唯一构造器会被 Spring 自动用于依赖注入，因此不需要再写 {@code @Autowired}。
      *
-     * <p>{@link ChatClient.Builder} 不是本项目手动 new 出来的：pom.xml 引入的
-     * {@code spring-ai-starter-model-openai} 会读取 application.yml 中的模型配置，自动创建 ChatModel 和预配置 Builder，
+     * ChatClient.Builder} pom.xml 引入的
+     * spring-ai-starter-model-openai 会读取 application.yml 中的模型配置，自动创建 ChatModel 和预配置 Builder，
      * Spring 再把 Builder 注入这里。其余参数也都是 Spring 容器中的 Bean。
      */
     public AgentServiceImpl(
+
             ChatClient.Builder builder,
+
             DailyTimeTools dailyTimeTools,
             AgentPromptFactory promptFactory,
             ConversationTaskBindingService conversationBindingService) {
         // build() 使用 Builder 中已经装配好的 ChatModel 创建 ChatClient，不需要 new ChatClient(...)。
         // 当前 Builder 没有调用 defaultAdvisors(...)，所以没有配置 Spring AI ChatMemory Advisor。
         this.chatClient = builder.build();
+
         this.dailyTimeTools = dailyTimeTools;
         this.promptFactory = promptFactory;
         this.conversationBindingService = conversationBindingService;
@@ -70,7 +73,9 @@ public class AgentServiceImpl implements AgentService {
                     conversationBindingService
                             .findLatestTaskId(request.conversationId(), user.userId())
                             .orElse(latestTaskId);
+//          返回AgentChatVO
             return new AgentChatVO(request.conversationId(), answer, taskId);
+
         } catch (RuntimeException exception) {
             if (exception instanceof BusinessException businessException) {
                 throw businessException;

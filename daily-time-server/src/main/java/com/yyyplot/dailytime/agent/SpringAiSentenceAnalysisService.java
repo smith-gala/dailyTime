@@ -22,9 +22,18 @@ public class SpringAiSentenceAnalysisService implements SentenceAnalysisService 
             LoggerFactory.getLogger(SpringAiSentenceAnalysisService.class);
     private static final int MAXIMUM_MODEL_ATTEMPTS = 2;
     private static final String SYSTEM_PROMPT =
-            "你负责分析一个英语口语句子。返回强类型结构：中文翻译、以 / 包裹的整句 IPA、自然讲解、恰好两条双语例句、固定" + " MusicTag 枚举。不要输出额外说明。";
+            "你负责分析一个英语口语句子。返回强类型结构：" +
+                    "中文翻译、以 / 包裹的整句 IPA、自然讲解、恰好两条双语例句、固定"
+                    + " MusicTag 枚举。不要输出额外说明。";
 
+    /*
+    声明了一个变量，我的 SpringAiService 对象里面，需要保存一个 ChatClient
+    但它现在还没被赋值，因为有 final，Java 要求它创建对象时必须赋值（写构造器）
+    */
     private final ChatClient chatClient;
+
+
+
     private final SentenceAnalysisValidator analysisValidator;
     private final String model;
     private final String requestEndpoint;
@@ -38,7 +47,9 @@ public class SpringAiSentenceAnalysisService implements SentenceAnalysisService 
             String baseUrl,
             @Value("${spring.ai.openai.chat.completions-path:/v1/chat/completions}")
             String completionsPath) {
+//      构造器注入
         this.chatClient = builder.build();
+
         this.analysisValidator = analysisValidator;
         this.model = model;
         this.requestEndpoint = buildRequestEndpoint(baseUrl, completionsPath);

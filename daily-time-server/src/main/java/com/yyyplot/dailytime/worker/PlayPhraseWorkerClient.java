@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yyyplot.dailytime.common.exception.BusinessException;
 import com.yyyplot.dailytime.common.exception.ErrorCode;
+
 import com.yyyplot.dailytime.config.DailyTimeProperties;
+
 import com.yyyplot.dailytime.enums.WorkerErrorCode;
 import com.yyyplot.dailytime.worker.protocol.DownloadWorkerRequest;
 import com.yyyplot.dailytime.worker.protocol.WorkerProgressEvent;
@@ -26,9 +28,8 @@ public class PlayPhraseWorkerClient extends AbstractProcessWorkerClient
 
     private final DailyTimeProperties properties;
 
-    public PlayPhraseWorkerClient(
-            ObjectMapper objectMapper,
-            DailyTimeProperties properties) {
+//  构造器
+    public PlayPhraseWorkerClient(ObjectMapper objectMapper, DailyTimeProperties properties) {
         super(objectMapper, Path.of(properties.projectRoot()));
         this.properties = properties;
     }
@@ -78,9 +79,11 @@ public class PlayPhraseWorkerClient extends AbstractProcessWorkerClient
                 "result".equals(finalEvent.path("type").asText())
                         ? finalEvent.path("data")
                         : finalEvent;
+
         boolean insufficient =
                 processResult.exitCode() == 2
                         || "insufficient_results".equals(payload.path("status").asText());
+
         if (insufficient) {
             throw new WorkerExecutionException(
                     WorkerErrorCode.INSUFFICIENT_RESULTS, "下载阶段未获得固定数量的素材");

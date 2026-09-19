@@ -12,9 +12,12 @@ public class RedisConfig {
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
+
         template.setConnectionFactory(connectionFactory);
+
         // Key 保持可读字符串；Value 使用 JSON，禁止 Java 原生序列化造成跨版本和安全问题。
         template.setKeySerializer(new StringRedisSerializer());
+
         template.setHashKeySerializer(new StringRedisSerializer());
         GenericJackson2JsonRedisSerializer jsonSerializer =
                 new GenericJackson2JsonRedisSerializer();

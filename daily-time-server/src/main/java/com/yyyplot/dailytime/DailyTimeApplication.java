@@ -9,7 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 
+
 @SpringBootApplication
+//发现并注册配置对象
 @ConfigurationPropertiesScan
 @MapperScan("com.yyyplot.dailytime.mapper")
 public class DailyTimeApplication {
